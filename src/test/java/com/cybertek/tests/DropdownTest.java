@@ -35,13 +35,13 @@ public class DropdownTest {
 
         //implicitly wait, this is going to be applied to whole test cases and elements
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("https://chercher.tech/practice/explicit-wait-sample-selenium-webdriver");
+        driver.get("http://secure.smartbearsoftware.com/samples/testcomplete12/WebOrders/login.aspx");
 
     }
 
     @AfterMethod
     public void tearDown(){
-        driver.close();
+       // driver.close();
 
     }
 
@@ -62,6 +62,26 @@ public class DropdownTest {
         String actualSelectedOption = productDropdown.getFirstSelectedOption().getText();
         Assert.assertEquals(actualSelectedOption,expectedSelectedOption,"First option selected is NOT as expected");
 
+        //Then select FamilyAlbum, make quantity 2, and click Calculate
+
+        productDropdown.selectByVisibleText("FamilyAlbum");
+        WebElement quantityBox = driver.findElement(By.id("ctl00_MainContent_fmwOrder_txtQuantity"));
+        quantityBox.sendKeys("2");
+
+        WebElement calculateButton = driver.findElement(By.cssSelector("input[type='submit']"));
+        calculateButton.click();
+
+        //Then verify Total is equal to Quantity*PricePerUnit
+        int expectedPrice = 160;
+
+        WebElement totalPriceElement = driver.findElement(By.id("ctl00_MainContent_fmwOrder_txtTotal"));
+
+       // System.out.println("totalPriceElement.getAttribute() = " + totalPriceElement.getText());
+        //will return nothing
+
+        int actualPrice = Integer.parseInt(totalPriceElement.getAttribute("value"));
+
+        Assert.assertEquals(actualPrice,expectedPrice,"Price is NOT as expected");
 
 
 
